@@ -46,7 +46,7 @@ Hi [YourUsername]! You've successfully authenticated... 라는 메시지가 나�
 
 
 '//
-
+cd ~/workspace/pjt folder
 echo "# googlechat-pjt1" >> README.md
 git init
 git add README.md
