@@ -1,0 +1,11 @@
+#!/bin/sh
+# pre-push: run tests before push
+
+echo "Running tests..."
+pytest tests/ -q
+if [ $? -ne 0 ]; then
+  echo "Tests failed. Fix before pushing."
+  exit 1
+fi
+
+exit 0

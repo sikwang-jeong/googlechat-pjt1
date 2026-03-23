@@ -1,0 +1,38 @@
+#!/bin/sh
+# pre-commit: doc lint + REVIEW.md update + code lint
+
+# 1. Check if any .kiro or docs files changed
+KIRO_CHANGED=$(git diff --cached --name-only | grep -E '^\.kiro/|^docs/')
+
+if [ -n "$KIRO_CHANGED" ]; then
+  echo "Detected .kiro/docs changes. Running doc lint..."
+
+  # Validate doc structure and consistency
+  .kiro/hooks/lint-docs.sh
+  if [ $? -ne 0 ]; then
+    exit 1
+  fi
+
+  # Regenerate REVIEW.md
+  .kiro/hooks/update-review.sh
+  git add REVIEW.md
+fi
+
+# 2. Run ruff check (only if app/ exists)
+if [ -d "app" ]; then
+  echo "Running ruff check..."
+  ruff check app/
+  if [ $? -ne 0 ]; then
+    echo "ruff check failed. Fix errors before committing."
+    exit 1
+  fi
+
+  echo "Running ruff format check..."
+  ruff format --check app/
+  if [ $? -ne 0 ]; then
+    echo "Format issues found. Run: ruff format app/"
+    exit 1
+  fi
+fi
+
+exit 0
