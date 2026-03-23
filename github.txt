@@ -81,3 +81,19 @@ architecture-decisions.md 파일을 읽고,
 이전에 진행하던 Google Chat 아키텍처 설계를 이어서 진행해줘.
 다음 작업은 Stage별 상세 구현 가이드야.
 
+
+---
+## 2026-03-23 작업 재개 가이드
+
+### 다른 PC에서 이어하기
+```bash
+git clone https://github.com/sikwang-jeong/googlechat-pjt1.git
+cd googlechat-pjt1
+```
+
+### Kiro 첫 메시지
+```
+.kiro/ 디렉토리의 문서들을 읽고,
+Google Chat 카드 인터랙션 시스템 프로젝트를 이어서 진행해줘.
+현재 Kiro 설계 작업은 완료됐고, 다음 단계는 app/ 소스코드 구현이야.
+```
