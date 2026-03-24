@@ -7,6 +7,15 @@ KIRO_CHANGED=$(git diff --cached --name-only | grep -E '^\.kiro/|^docs/')
 if [ -n "$KIRO_CHANGED" ]; then
   echo "Detected .kiro/docs changes. Running doc lint..."
 
+  # Show open TODO items
+  TODO_LINES=$(grep -rn '^\- \[ \]' .kiro/specs/*/tasks.md 2>/dev/null)
+  if [ -n "$TODO_LINES" ]; then
+    echo ""
+    echo "📋 Open TODO items:"
+    echo "$TODO_LINES" | sed 's|.kiro/specs/||; s|/tasks.md:| → |'
+    echo ""
+  fi
+
   # Validate doc structure and consistency
   .kiro/hooks/lint-docs.sh
   if [ $? -ne 0 ]; then
@@ -16,15 +25,6 @@ if [ -n "$KIRO_CHANGED" ]; then
   # Regenerate REVIEW.md
   .kiro/hooks/update-review.sh
   git add REVIEW.md
-
-  # Show open TODO items
-  TODO_LINES=$(grep -rn '^\- \[ \]' .kiro/specs/*/tasks.md 2>/dev/null)
-  if [ -n "$TODO_LINES" ]; then
-    echo ""
-    echo "📋 Open TODO items:"
-    echo "$TODO_LINES" | sed 's|.kiro/specs/||; s|/tasks.md:| → |'
-    echo ""
-  fi
 fi
 
 # 2. Run ruff check (only if app/ exists)
