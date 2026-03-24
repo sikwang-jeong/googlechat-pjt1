@@ -10,3 +10,5 @@
 - R7: Route `settings` keyword → user settings dialog (all users)
 - R8: Route `admin` keyword → admin main dialog (admin users only)
 - R9: Resolve `users.locale` per request and pass to card builder for i18n rendering
+- R10: `POST /webhook/alert` — receive external alert events, send alert card to Chat
+- R11: `GET /report/{alert_id}` — serve HTML alert summary page (Jinja2)

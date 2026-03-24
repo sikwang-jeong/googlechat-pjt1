@@ -15,6 +15,8 @@ All users can access personal settings (locale change) via the `settings` keywor
    - Query List
    - Add Query
    - Delete Query
+   - Alert Actions
+   - User Permissions
    - My Settings (same as user settings dialog)
    - Template Gallery
 6. Query list: shows all registered query_keys with db type.
@@ -22,6 +24,8 @@ All users can access personal settings (locale change) via the `settings` keywor
 8. Query delete: select query_key from dropdown → confirm → delete.
 9. Admin user list managed via `configurations.admin_users` (google_id array).
 10. All card and dialog text rendered in the user's locale (`users.locale`, default `en`).
+11. Alert action mapping: admin maps `alert_code` → `action_label` + `query_key` via `configurations.alert_actions`.
+12. User permissions: admin controls `can_run_query` per user via `configurations.user_permissions`.
 
 ## Non-Functional Requirements
 
