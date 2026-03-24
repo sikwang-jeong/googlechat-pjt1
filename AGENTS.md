@@ -4,7 +4,43 @@
 Google Chat Card v2 interaction system.
 Internal users query and process business data via Chat Card UI.
 
-## Stack
+## Agent Roles
+
+See `.kiro/skills/SKILLS.md` for full role definitions. Summary:
+
+| Agent | Trigger | Output |
+|---|---|---|
+| `dev-agent` | `[ ]` task in any `tasks.md` | Working code under `app/`, updated `tasks.md` |
+| `qa-agent` | Tasks marked complete / PR opened | Review comments (✅ / ⚠️ / 🔴), updated `tasks.md` |
+| `deploy-agent` | `main` push after QA / deploy failure | Deploy log, migration run, env var audit |
+| `docs-agent` | New route added / before release | Updated `docs/API-SPEC.md`, `CHANGELOG.md` |
+
+### dev-agent: Read Before Coding
+- `.kiro/steering/conventions.md`
+- `.kiro/steering/api-standards.md`
+- `.kiro/specs/{feature}/requirements.md`
+- `.kiro/specs/{feature}/design.md`
+- `.kiro/specs/{feature}/tasks.md`
+
+### qa-agent: Check List
+- Implementation matches `requirements.md` and `design.md`
+- Naming, type hints, line length ≤ 88
+- No bare `except:`, no `== None`, no hardcoded secrets
+- All routes protected by `verify_internal_token` or `verify_google_token`
+- No raw SQL outside `services/db_query.py`
+
+### deploy-agent: Steps
+1. `docker compose up -d --build`
+2. `alembic upgrade head`
+3. `gcloud run deploy` (Cloud Run relay)
+4. Verify `GET /health` → 200
+
+### docs-agent: Steps
+1. Extract routes from `app/routers/` → update `docs/API-SPEC.md`
+2. Parse `git log` → append to `CHANGELOG.md`
+3. Run `ruff check app/ --fix && ruff format app/`
+
+
 Python 3.12 / FastAPI / PostgreSQL / Redis / Celery / Docker Compose / GCP Cloud Run
 
 ## Key References (read before coding)
