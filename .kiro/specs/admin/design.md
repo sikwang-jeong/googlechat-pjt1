@@ -85,6 +85,74 @@ On [Delete] → confirm dialog (`admin_query_delete_confirm`) → delete → clo
 - Card text strings resolved via `i18n(key, locale)` helper in `card_builder.py`
 - Supported locales: `en`, `ko`
 
+### Locale String Structure
+Strings stored as a dict in `card_builder.py` (or `services/i18n.py`):
+
+```python
+STRINGS = {
+    "en": {
+        "welcome.title": "Welcome",
+        "welcome.subtitle": "Use 'query' to search data.",
+        "query_select.title": "Select Query",
+        "query_result.title": "Query Result",
+        "query_result.no_results": "No results found.",
+        "error.title": "Error",
+        "error.body": "An unexpected error occurred.",
+        "help.title": "Help",
+        "help.body": "Commands: query / help / settings / admin",
+        "confirm.title": "Confirm",
+        "confirm.yes": "Confirm",
+        "confirm.no": "Cancel",
+        "success.title": "Done",
+        "alert.title": "Alert",
+        "progress.title": "In Progress",
+        "input_form.title": "Enter Parameters",
+        "list_select.title": "Select",
+        "monitoring.title": "DB Status",
+        "settings.title": "My Settings",
+        "settings.language": "Language",
+        "settings.save": "Save",
+        "admin.unauthorized": "Unauthorized.",
+        "admin.main.title": "Admin Menu",
+        "admin.query_list": "Query List",
+        "admin.query_add": "Add Query",
+        "admin.query_delete": "Delete Query",
+        "admin.my_settings": "My Settings",
+        "admin.template_gallery": "Template Gallery",
+    },
+    "ko": {
+        "welcome.title": "환영합니다",
+        "welcome.subtitle": "'조회'를 입력하여 데이터를 검색하세요.",
+        "query_select.title": "쿼리 선택",
+        "query_result.title": "조회 결과",
+        "query_result.no_results": "결과가 없습니다.",
+        "error.title": "오류",
+        "error.body": "예기치 않은 오류가 발생했습니다.",
+        "help.title": "도움말",
+        "help.body": "명령어: query / help / settings / admin",
+        "confirm.title": "확인",
+        "confirm.yes": "확인",
+        "confirm.no": "취소",
+        "success.title": "완료",
+        "alert.title": "알림",
+        "progress.title": "처리 중",
+        "input_form.title": "파라미터 입력",
+        "list_select.title": "선택",
+        "monitoring.title": "DB 상태",
+        "settings.title": "내 설정",
+        "settings.language": "언어",
+        "settings.save": "저장",
+        "admin.unauthorized": "권한이 없습니다.",
+        "admin.main.title": "관리자 메뉴",
+        "admin.query_list": "쿼리 목록",
+        "admin.query_add": "쿼리 추가",
+        "admin.query_delete": "쿼리 삭제",
+        "admin.my_settings": "내 설정",
+        "admin.template_gallery": "템플릿 갤러리",
+    }
+}
+```
+
 ## CARD_CLICKED Routing Addition
 | function | parameters.type | Action |
 |---|---|---|
@@ -100,6 +168,30 @@ On [Delete] → confirm dialog (`admin_query_delete_confirm`) → delete → clo
 Card templates (A~L) are defined in `card_builder.py` as `build_template(name, data)`.
 Preview is available via `admin_template_gallery` dialog — lists all 12 templates.
 Each template renders with `TEMPLATE_SAMPLES[name]` sample data.
+
+### `admin_template_preview` Response Format
+```json
+{
+  "actionResponse": {
+    "type": "DIALOG",
+    "dialogAction": {
+      "dialog": {
+        "body": {
+          "sections": [{
+            "widgets": [{
+              "textParagraph": { "text": "<b>Template: {name}</b>" }
+            }, {
+              "textParagraph": { "text": "{rendered card JSON as preformatted text}" }
+            }]
+          }]
+        }
+      }
+    }
+  }
+}
+```
+- Rendered card JSON is displayed as `<pre>` formatted text inside the dialog body.
+- Response is private (visible to requester only via dialog).
 
 ### Template Catalog
 | ID | Name | Description |
