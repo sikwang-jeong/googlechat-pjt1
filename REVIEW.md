@@ -1,6 +1,6 @@
 # 프로젝트 종합 정리 (점검용)
 
-> 마지막 갱신: 2026-03-25 07:35
+> 마지막 갱신: 2026-03-25 08:37
 > 이 파일은 .kiro 문서 변경 시 pre-commit hook에 의해 자동 갱신됩니다.
 
 ---
@@ -206,6 +206,15 @@ ngrok http 8000
 - [ ] Verify query add → appears in `configurations.allowed_queries`
 - [ ] Verify query delete → removed from `configurations.allowed_queries`
 - [ ] Verify all 12 templates render without error in preview dialog
+- [ ] Add `MONITORING_LOG_DIR` to `app/core/config.py`
+- [ ] Implement `app/services/log_parser.py` — parse `log_T_*.log` into `ParsedLog`
+- [ ] Add monitor card template to `app/services/card_builder.py`
+- [ ] Implement `app/tasks/db_monitor_card.py` — `run_db_monitor_card`, `run_monitor_action`
+- [ ] Register beat_schedule entries in `app/tasks/celery_app.py`
+- [ ] Add `monitor_action` CARD_CLICKED handler in `app/services/event_handler.py`
+- [ ] Implement `app/routers/monitor.py` — `GET /report/monitor/{log_id}`
+- [ ] Create `app/templates/monitor_report.html`
+- [ ] Add `monitor_actions` default config to `configurations` table seed/migration
 - [ ] Write `docker-compose.yml`
 - [ ] Write `Dockerfile`
 - [ ] Write `Caddyfile`
