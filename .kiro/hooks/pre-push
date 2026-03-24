@@ -1,3 +1,0 @@
-#!/bin/sh
-# pre-push: tests moved to pre-commit
-exit 0
