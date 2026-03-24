@@ -35,7 +35,17 @@ if [ -d "app" ]; then
   fi
 fi
 
-# 3. Show open TODO items from specs tasks.md files
+# 3. Run tests (only if tests/ exists)
+if [ -d "tests" ]; then
+  echo "Running tests..."
+  pytest tests/ -q
+  if [ $? -ne 0 ]; then
+    echo "Tests failed. Fix before committing."
+    exit 1
+  fi
+fi
+
+# 4. Show open TODO items from specs tasks.md files
 TODO_LINES=$(grep -rn '^\- \[ \]' .kiro/specs/*/tasks.md 2>/dev/null)
 if [ -n "$TODO_LINES" ]; then
   echo ""
