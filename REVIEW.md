@@ -1,6 +1,6 @@
 # 프로젝트 종합 정리 (점검용)
 
-> 마지막 갱신: 2026-03-24 22:47
+> 마지막 갱신: 2026-03-25 07:35
 > 이 파일은 .kiro 문서 변경 시 pre-commit hook에 의해 자동 갱신됩니다.
 
 ---
@@ -149,6 +149,21 @@ ngrok http 8000
 
 ## 9. 미완료 항목
 
+- [ ] Add `MONITORING_SPACE_NAME` to `.env.dev.example`
+- [ ] Implement `app/services/db_health.py` — connection check per driver (postgres/oracle/mysql)
+- [ ] Implement `app/tasks/monitoring.py` — Celery task + card send logic
+- [ ] Register Celery Beat schedule in `tasks/celery_app.py`
+- [ ] Add `monitoring_detail` dialog handler to `routers/dialog.py`
+- [ ] Manual test: trigger task via `celery call tasks.monitoring.run_db_monitor`
+- [ ] Implement `db/session.py` (main + internal DB engines)
+- [ ] Implement `db/redis.py`
+- [ ] Implement `tasks/celery_app.py`
+- [ ] Implement `models/db.py` (SQLAlchemy ORM models)
+- [ ] Configure Alembic (`alembic init`, `env.py`)
+- [ ] Create initial migration (`alembic revision --autogenerate`)
+- [ ] Apply migration (`alembic upgrade head`)
+- [ ] Insert initial `configurations` data (allowed queries)
+- [ ] Set up data retention cron job
 - [ ] Implement `core/config.py`
 - [ ] Implement `core/auth.py`
 - [ ] Implement `models/chat_event.py`
@@ -161,20 +176,12 @@ ngrok http 8000
 - [ ] Write `templates/alert.html` (Jinja2 report template)
 - [ ] Write unit tests for event routing
 - [ ] Integration test with Cloud Run relay
-- [ ] Write `docker-compose.yml`
-- [ ] Write `Dockerfile`
-- [ ] Write `Caddyfile`
-- [ ] Write `cloudrun/main.py`
-- [ ] Write `.gitlab-ci.yml`
-- [ ] Write `backup.sh` + register crontab
-- [ ] Deploy Cloud Run and verify relay
-- [ ] Verify Caddy TLS certificate issued
-- [ ] Add `MONITORING_SPACE_NAME` to `.env.dev.example`
-- [ ] Implement `app/services/db_health.py` — connection check per driver (postgres/oracle/mysql)
-- [ ] Implement `app/tasks/monitoring.py` — Celery task + card send logic
-- [ ] Register Celery Beat schedule in `tasks/celery_app.py`
-- [ ] Add `monitoring_detail` dialog handler to `routers/dialog.py`
-- [ ] Manual test: trigger task via `celery call tasks.monitoring.run_db_monitor`
+- [ ] Implement `services/card_builder.py` error_card
+- [ ] Implement extended `/health` with DB + Redis checks
+- [ ] Implement `core/logging.py` JSON formatter
+- [ ] End-to-end test: Chat → Cloud Run → FastAPI → response
+- [ ] Verify Celery retry behavior (3x max)
+- [ ] Verify failure card sent after max retries
 - [ ] Add `settings` keyword routing in `app/services/event_handler.py`
 - [ ] Add `admin` keyword routing in `app/services/event_handler.py`
 - [ ] Implement `admin_service.py` — `is_admin(google_id)` check via `configurations.admin_users`, `can_run_query(google_id)` check via `configurations.user_permissions`
@@ -199,24 +206,17 @@ ngrok http 8000
 - [ ] Verify query add → appears in `configurations.allowed_queries`
 - [ ] Verify query delete → removed from `configurations.allowed_queries`
 - [ ] Verify all 12 templates render without error in preview dialog
-- [ ] Implement `services/card_builder.py` error_card
-- [ ] Implement extended `/health` with DB + Redis checks
-- [ ] Implement `core/logging.py` JSON formatter
-- [ ] End-to-end test: Chat → Cloud Run → FastAPI → response
-- [ ] Verify Celery retry behavior (3x max)
-- [ ] Verify failure card sent after max retries
+- [ ] Write `docker-compose.yml`
+- [ ] Write `Dockerfile`
+- [ ] Write `Caddyfile`
+- [ ] Write `cloudrun/main.py`
+- [ ] Write `.gitlab-ci.yml`
+- [ ] Write `backup.sh` + register crontab
+- [ ] Deploy Cloud Run and verify relay
+- [ ] Verify Caddy TLS certificate issued
 - [ ] Implement `card_builder.py` service
 - [ ] Test all widgets in Card Builder
 - [ ] Verify webhook receives events from Google Chat
-- [ ] Implement `db/session.py` (main + internal DB engines)
-- [ ] Implement `db/redis.py`
-- [ ] Implement `tasks/celery_app.py`
-- [ ] Implement `models/db.py` (SQLAlchemy ORM models)
-- [ ] Configure Alembic (`alembic init`, `env.py`)
-- [ ] Create initial migration (`alembic revision --autogenerate`)
-- [ ] Apply migration (`alembic upgrade head`)
-- [ ] Insert initial `configurations` data (allowed queries)
-- [ ] Set up data retention cron job
 
 ---
 

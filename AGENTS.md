@@ -21,6 +21,7 @@ See `.kiro/skills/SKILLS.md` for full role definitions. Summary:
 - `.kiro/specs/{feature}/requirements.md`
 - `.kiro/specs/{feature}/design.md`
 - `.kiro/specs/{feature}/tasks.md`
+- When modifying DB models (`models/db.py`), generate a migration script via `alembic revision --autogenerate -m "<description>"`
 
 ### qa-agent: Check List
 - Implementation matches `requirements.md` and `design.md`
@@ -30,10 +31,11 @@ See `.kiro/skills/SKILLS.md` for full role definitions. Summary:
 - No raw SQL outside `services/db_query.py`
 
 ### deploy-agent: Steps
-1. `docker compose up -d --build`
-2. `alembic upgrade head`
-3. `gcloud run deploy` (Cloud Run relay)
-4. Verify `GET /health` → 200
+1. `alembic check` — abort if schema is out of sync
+2. `docker compose up -d --build`
+3. `alembic upgrade head`
+4. `gcloud run deploy` (Cloud Run relay)
+5. Verify `GET /health` → 200
 
 ### docs-agent: Steps
 1. Extract routes from `app/routers/` → update `docs/API-SPEC.md`

@@ -19,7 +19,8 @@
 
 <!-- FastAPI convention: https://cursorrules.org/article/python-fastapi-scalable-api-cursorrules-prompt-fil -->
 - Boolean variables: `is_`, `has_`, `can_` prefix (e.g. `is_admin`, `has_permission`)
-- Pydantic models: `PascalCase` + `Request` / `Response` suffix (e.g. `QueryRunRequest`)
+- Pydantic models (Schemas): `PascalCase` + `Request` / `Response` suffix (e.g. `QueryRunRequest`)
+- SQLAlchemy models (DB): `PascalCase`, singular (e.g. `QueryConfig`)
 
 <!-- Celery convention -->
 - Celery task functions: `snake_case`, verb-first (e.g. `run_query`, `send_notification`)
@@ -36,7 +37,7 @@
 - Type hints: required on all function parameters and return values
 
 <!-- PEP 257: https://peps.python.org/pep-0257 -->
-- Docstrings: one-line docstring on all public functions
+- Docstrings: one-line docstring on all public functions (Exception: FastAPI router functions can use multi-line for API-SPEC generation)
 
 <!-- PEP 8: Exception handling -->
 - Exception handling: bare `except:` forbidden — always specify exception type
@@ -45,8 +46,15 @@
 <!-- Python 3.12 convention -->
 - String formatting: use f-strings — avoid `%` format and `.format()`
 
+<!-- Async handling -->
+- FastAPI routers/services must use `async/await`
+- Celery tasks must be standard `def` (synchronous)
+
+<!-- FastAPI: Dependency Injection -->
+- Always use `Depends()` for DB sessions and Auth in routers
+
 <!-- Project-specific rules -->
-- All async functions use `async/await`
+- New UI text must be registered in `STRINGS` dict in `card_builder.py` before use
 - No raw SQL outside `services/db_query.py`
 - Only pre-approved queries from `configurations` table allowed for internal DBs
 - Secrets via environment variables only — never hardcoded

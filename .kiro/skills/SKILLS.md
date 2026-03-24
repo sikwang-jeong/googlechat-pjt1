@@ -7,6 +7,11 @@
 - `AGENTS.md` must not be modified by any agent
 - Always read all documents listed in Read Before Starting, in order
 
+## Definition of Done
+- **dev-agent**: Code written + `ruff check` passes + `tasks.md` checkboxes marked `[x]`
+- **qa-agent**: Review complete (✅/⚠️/🔴) + `tasks.md` updated with `✅ QA Passed`
+- **deploy-agent**: `GET /health` returns 200 + `tasks.md` updated with `🚀 Deployed`
+
 ---
 
 ## dev-agent
