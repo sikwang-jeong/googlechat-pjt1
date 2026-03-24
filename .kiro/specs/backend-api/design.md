@@ -15,6 +15,8 @@ app/
 ## Endpoints
 - `POST /webhook/chat` — receive and route all Chat events
 - `POST /webhook/chat/dialog` — handle dialog form submissions
+- `POST /webhook/alert` — receive external alert events
+- `GET /report/{alert_id}` — serve HTML alert summary page (Jinja2)
 - `GET /health` — health check
 
 ## Auth Flow
@@ -153,3 +155,25 @@ event received
 ### Scope
 - Applies to: card header, widget labels, button text, error messages
 - Does NOT apply to: raw DB query results, system identifiers (query_key, db name)
+
+## Alert Webhook Flow
+
+```
+POST /webhook/alert  { alert_code, title, body, ... }
+  → save to alerts table
+  → lookup configurations.alert_actions[alert_code]
+  → action found  → build alert card with [{action_label}] button
+  → action absent → build alert card with [상세 보기 →] only
+  → send card to Chat space via REST API
+
+GET /report/{alert_id}
+  → query alerts table
+  → render Jinja2 HTML template → return HTML response
+```
+
+### Files to Add
+```
+app/routers/alert.py        ← POST /webhook/alert, GET /report/{alert_id}
+app/templates/alert.html    ← Jinja2 HTML report template
+app/models/db.py            ← Alert SQLAlchemy model
+```

@@ -1,6 +1,6 @@
 # 프로젝트 종합 정리 (점검용)
 
-> 마지막 갱신: 2026-03-24 14:51
+> 마지막 갱신: 2026-03-24 15:03
 > 이 파일은 .kiro 문서 변경 시 pre-commit hook에 의해 자동 갱신됩니다.
 
 ---
@@ -182,6 +182,7 @@ ngrok http 8000
 - [ ] `admin_query_list` — query list dialog
 - [ ] `admin_query_add` — query add form + submit handler
 - [ ] `admin_query_delete` — query delete form
+- [ ] `admin_alert_actions` — alert action mapping form + save handler
 - [ ] `admin_user_permissions` — user permission form + save handler
 - [ ] `admin_query_delete_confirm` — delete confirmation + execute
 - [ ] `admin_template_gallery` — card template preview list

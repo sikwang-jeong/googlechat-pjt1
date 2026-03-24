@@ -49,6 +49,7 @@ On save → update `users.locale` → close dialog with `actionStatus: OK`
 [Query List]
 [Add Query]
 [Delete Query]
+[Alert Actions]
 [User Permissions]
 [My Settings]   ← same as user_settings dialog
 [Template Gallery]
@@ -163,6 +164,7 @@ STRINGS = {
 | `open_dialog` | `admin_query_add` | Open query add form |
 | `open_dialog` | `admin_query_delete` | Open query delete form |
 | `open_dialog` | `admin_query_delete_confirm` | Open delete confirmation |
+| `open_dialog` | `admin_alert_actions` | Open alert action mapping dialog |
 | `open_dialog` | `admin_user_permissions` | Open user permissions dialog |
 | `open_dialog` | `admin_template_gallery` | Open template preview gallery |
 
@@ -210,6 +212,48 @@ Each template renders with `TEMPLATE_SAMPLES[name]` sample data.
 | J | input_form | Parameter input form card |
 | K | list_select | List selection card (RADIO/DROPDOWN) |
 | L | success | Task completion summary card |
+
+## Alert Action Mapping
+
+### Storage
+```json
+{
+  "key": "alert_actions",
+  "value": {
+    "ALERT_001": { "action_label": "Fix Now", "query_key": "fix_user_session" },
+    "ALERT_002": { "action_label": "Cleanup", "query_key": "cleanup_temp_data" }
+  }
+}
+```
+- `alert_code`: unique identifier per alert type
+- `action_label`: button text shown on alert card
+- `query_key`: must exist in `configurations.allowed_queries`
+
+### `admin_alert_actions` Dialog
+```
+Alert Code    [TextInput]
+Action Label  [TextInput]
+Query Key     [SelectionInput DROPDOWN — populated from allowed_queries]
+[Save] [Cancel]
+```
+On save → upsert `configurations.alert_actions[alert_code]` → close with `actionStatus: OK`
+
+### Alert Card Generation
+```
+alert_code → lookup alert_actions
+  → action found  → render alert card with [상세 보기 →] + [{action_label}] buttons
+  → action absent → render alert card with [상세 보기 →] button only
+```
+
+### Action Button Click Flow
+```
+[{action_label}] clicked
+  → CARD_CLICKED: function=run_query
+                  parameters: { query_key, alert_id }
+  → can_run_query permission check
+  → Celery run_query executed
+  → result card sent on completion (elapsed included)
+```
 
 ## User Permissions
 

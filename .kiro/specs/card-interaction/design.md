@@ -82,7 +82,39 @@ Completed in {elapsed}s           ← header subtitle
 { "text": "Open Dialog",  "onClick": { "action": { "function": "open_dialog", "interaction": "OPEN_DIALOG" } } }
 ```
 
-## Template Gallery Dialog Flow
+## Alert Card Structure
+
+### Without action (informational)
+```
+🚨 {title}                        ← header
+{summary text}                    ← textParagraph
+[상세 보기 →]                      ← openLink button
+```
+
+### With action (action_required)
+```
+🚨 {title}                        ← header
+{summary text}                    ← textParagraph
+[상세 보기 →]  [{action_label}]    ← openLink + CARD_CLICKED buttons
+```
+
+### Action Button JSON
+```json
+{
+  "text": "{action_label}",
+  "onClick": {
+    "action": {
+      "function": "run_query",
+      "parameters": [
+        { "key": "query_key", "value": "{query_key}" },
+        { "key": "alert_id", "value": "{alert_id}" }
+      ]
+    }
+  }
+}
+```
+
+## Alert Report Page
 
 ### Entry
 ```
