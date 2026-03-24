@@ -1,6 +1,6 @@
 # 프로젝트 종합 정리 (점검용)
 
-> 마지막 갱신: 2026-03-24 10:24
+> 마지막 갱신: 2026-03-24 10:38
 > 이 파일은 .kiro 문서 변경 시 pre-commit hook에 의해 자동 갱신됩니다.
 
 ---
@@ -175,3 +175,9 @@ ngrok http 8000
 - [ ] Implement `card_builder.py` service
 - [ ] Test all widgets in Card Builder
 - [ ] Verify webhook receives events from Google Chat
+
+---
+
+## 10. 설계 보완 필요 항목
+
+없음

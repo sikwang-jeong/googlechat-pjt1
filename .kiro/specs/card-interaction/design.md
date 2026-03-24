@@ -49,6 +49,13 @@
 }
 ```
 
+## Button Examples (all supported functions)
+```json
+{ "text": "Run Query",    "onClick": { "action": { "function": "run_query" } } }
+{ "text": "Refresh",      "onClick": { "action": { "function": "refresh_card" } } }
+{ "text": "Open Dialog",  "onClick": { "action": { "function": "open_dialog", "interaction": "OPEN_DIALOG" } } }
+```
+
 ## Endpoints
 - `POST /webhook/chat` — button clicks, messages, space events
 - `POST /webhook/chat/dialog` — dialog form submissions

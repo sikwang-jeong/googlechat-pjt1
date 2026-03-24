@@ -163,6 +163,16 @@ ngrok http 8000
 ## 9. 미완료 항목
 
 $(grep -rh '^\- \[ \]' .kiro/specs/ 2>/dev/null | sed 's/^- \[ \] /- [ ] /')
+
+---
+
+## 10. 설계 보완 필요 항목
+
+$(if [ -s ".kiro/hooks/.lint-warnings" ]; then
+  sed 's/^/- ⚠ /' .kiro/hooks/.lint-warnings
+else
+  echo "없음"
+fi)
 EOF
 
 echo "REVIEW.md updated."

@@ -87,6 +87,7 @@ INSERT INTO configurations (key, value, description) VALUES
 | User info | `user:{google_id}` | 1 hour |
 | Query result cache | `query:{hash}` | 10 min |
 | Dialog session | `session:dialog:{user_id}:{dialog_id}` | 30 min |
+| Executed action | `executed:{message_name}:{function}` | 1 hour |
 
 ## Internal DB Connections
 

@@ -12,6 +12,11 @@ app/
 └── tasks/celery_app.py
 ```
 
+## Endpoints
+- `POST /webhook/chat` — receive and route all Chat events
+- `POST /webhook/chat/dialog` — handle dialog form submissions
+- `GET /health` — health check
+
 ## Auth Flow
 ```
 Google Chat → JWT → Cloud Run → INTERNAL_API_TOKEN → FastAPI
@@ -58,6 +63,26 @@ match event.type:
   "user_google_id": "xxx",
   "message_name": "spaces/xxx/messages/yyy"
 }
+```
+
+## Duplicate Execution Prevention (Shared Space)
+
+In shared spaces, multiple users can see and click the same card message.
+To prevent duplicate execution:
+
+### Detection
+- Key: `executed:{message_name}:{function}` in Redis
+- Value: `{ "display_name": "...", "google_id": "..." }` (first executor)
+- TTL: 1 hour
+
+### Flow
+1. On `CARD_CLICKED`, check Redis key existence
+2. If key exists → return text response: "Already processed. (@{display_name} executed this.)"
+3. If key not exists → set Redis key → proceed with execution
+
+### Response for duplicate click (visible to clicker only)
+```json
+{ "text": "Already processed. (@홍길동 executed this.)" }
 ```
 
 ## Internal DB Routing
