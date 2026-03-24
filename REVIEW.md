@@ -1,6 +1,6 @@
 # 프로젝트 종합 정리 (점검용)
 
-> 마지막 갱신: 2026-03-24 14:36
+> 마지막 갱신: 2026-03-24 14:48
 > 이 파일은 .kiro 문서 변경 시 pre-commit hook에 의해 자동 갱신됩니다.
 
 ---
@@ -172,7 +172,7 @@ ngrok http 8000
 - [ ] Verify failure card sent after max retries
 - [ ] Add `settings` keyword routing in `app/services/event_handler.py`
 - [ ] Add `admin` keyword routing in `app/services/event_handler.py`
-- [ ] Implement `admin_service.py` — `is_admin(google_id)` check via `configurations.admin_users`
+- [ ] Implement `admin_service.py` — `is_admin(google_id)` check via `configurations.admin_users`, `can_run_query(google_id)` check via `configurations.user_permissions`
 - [ ] Add `locale` column to `users` table via Alembic migration
 - [ ] Implement `i18n(key, locale)` helper in `app/services/card_builder.py`
 - [ ] Add locale string files / dict for `en` and `ko`
@@ -182,6 +182,7 @@ ngrok http 8000
 - [ ] `admin_query_list` — query list dialog
 - [ ] `admin_query_add` — query add form + submit handler
 - [ ] `admin_query_delete` — query delete form
+- [ ] `admin_user_permissions` — user permission form + save handler
 - [ ] `admin_query_delete_confirm` — delete confirmation + execute
 - [ ] `admin_template_gallery` — card template preview list
 - [ ] Add `build_template(name, data, locale="en")` function

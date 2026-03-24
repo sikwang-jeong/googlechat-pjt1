@@ -49,6 +49,7 @@ On save → update `users.locale` → close dialog with `actionStatus: OK`
 [Query List]
 [Add Query]
 [Delete Query]
+[User Permissions]
 [My Settings]   ← same as user_settings dialog
 [Template Gallery]
 ```
@@ -162,6 +163,7 @@ STRINGS = {
 | `open_dialog` | `admin_query_add` | Open query add form |
 | `open_dialog` | `admin_query_delete` | Open query delete form |
 | `open_dialog` | `admin_query_delete_confirm` | Open delete confirmation |
+| `open_dialog` | `admin_user_permissions` | Open user permissions dialog |
 | `open_dialog` | `admin_template_gallery` | Open template preview gallery |
 
 ## Card Template Preview
@@ -208,6 +210,32 @@ Each template renders with `TEMPLATE_SAMPLES[name]` sample data.
 | J | input_form | Parameter input form card |
 | K | list_select | List selection card (RADIO/DROPDOWN) |
 | L | success | Task completion summary card |
+
+## User Permissions
+
+### Storage
+```json
+{ "key": "user_permissions", "value": { "google_id_1": { "can_run_query": false } } }
+```
+- Default (key absent): `can_run_query: true`
+- Admin users: always allowed, no permission check
+
+### `admin_user_permissions` Dialog
+```
+User    [SelectionInput DROPDOWN — populated from users table]
+Allow query execution  [SelectionInput CHECK_BOX]
+[Save] [Cancel]
+```
+On save → upsert `configurations.user_permissions[google_id]` → close with `actionStatus: OK`
+
+### Permission Check Flow
+```
+run_query requested
+  → admin_service.can_run_query(google_id)
+  → admin user → allow
+  → user_permissions[google_id].can_run_query is False → { "text": "You do not have permission to run queries." }
+  → otherwise → allow
+```
 
 ## Data Layer Changes
 - `users` table: add `locale VARCHAR(10) DEFAULT 'en'`

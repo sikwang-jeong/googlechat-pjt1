@@ -3,7 +3,7 @@
 ## Keyword & Auth
 - [ ] Add `settings` keyword routing in `app/services/event_handler.py`
 - [ ] Add `admin` keyword routing in `app/services/event_handler.py`
-- [ ] Implement `admin_service.py` — `is_admin(google_id)` check via `configurations.admin_users`
+- [ ] Implement `admin_service.py` — `is_admin(google_id)` check via `configurations.admin_users`, `can_run_query(google_id)` check via `configurations.user_permissions`
 
 ## i18n
 - [ ] Add `locale` column to `users` table via Alembic migration
@@ -17,6 +17,7 @@
 - [ ] `admin_query_list` — query list dialog
 - [ ] `admin_query_add` — query add form + submit handler
 - [ ] `admin_query_delete` — query delete form
+- [ ] `admin_user_permissions` — user permission form + save handler
 - [ ] `admin_query_delete_confirm` — delete confirmation + execute
 - [ ] `admin_template_gallery` — card template preview list
 
