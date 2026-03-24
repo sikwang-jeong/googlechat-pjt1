@@ -35,4 +35,13 @@ if [ -d "app" ]; then
   fi
 fi
 
+# 3. Show open TODO items from specs tasks.md files
+TODO_LINES=$(grep -rn '^\- \[ \]' .kiro/specs/*/tasks.md 2>/dev/null)
+if [ -n "$TODO_LINES" ]; then
+  echo ""
+  echo "📋 Open TODO items:"
+  echo "$TODO_LINES" | sed 's|.kiro/specs/||; s|/tasks.md:| → |'
+  echo ""
+fi
+
 exit 0
