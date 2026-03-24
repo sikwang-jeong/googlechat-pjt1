@@ -1,6 +1,6 @@
 # 프로젝트 종합 정리 (점검용)
 
-> 마지막 갱신: 2026-03-24 15:18
+> 마지막 갱신: 2026-03-24 15:20
 > 이 파일은 .kiro 문서 변경 시 pre-commit hook에 의해 자동 갱신됩니다.
 
 ---
@@ -24,21 +24,20 @@ Google Chat Card v2 인터랙션 시스템.
 │   ├── tech.md        → 기술 스택
 │   ├── api-standards.md → API 응답 형식
 │   └── conventions.md → 네이밍·코드 규칙
-├── skills/            ← 에이전트별 역할 정의
-│   ├── dev-agent/SKILL.md
-│   ├── qa-agent/SKILL.md
-│   └── deploy/SKILL.md
+├── skills/SKILLS.md   ← 에이전트별 역할 정의 (dev/qa/deploy/docs)
 ├── specs/             ← 기능별 명세
-│   ├── card-interaction/
+│   ├── admin/
 │   ├── backend-api/
+│   ├── card-interaction/
 │   ├── data-layer/
 │   ├── infra/
-│   └── integration/
-└── hooks/             ← Git hooks
+│   ├── integration/
+│   └── monitoring/
+└── hooks/             ← Git hooks (pre-commit, commit-msg, prepare-commit-msg)
 
-app/                   ← FastAPI 소스 (Codex 구현 예정)
-cloudrun/              ← Cloud Run 릴레이 (Codex 구현 예정)
-scripts/               ← 백업·보존 스크립트 (Codex 구현 예정)
+app/                   ← FastAPI 소스 (구현 예정)
+cloudrun/              ← Cloud Run 릴레이 (구현 예정)
+scripts/               ← 백업·보존 스크립트 (구현 예정)
 docs/
 ├── PRD.md
 ├── API-SPEC.md
@@ -89,7 +88,11 @@ docs/
 | 3 | DB / Redis / Celery | 3/12 | ✅ 설계 완료 |
 | 4 | 인프라 | 5/13 | ✅ 설계 완료 |
 | 5 | 통합 + 에러 처리 + 로깅 | 4/10 | ✅ 설계 완료 |
-| - | app/ 코드 구현 | -/- | 🔲 Codex 예정 |
+| 6 | Admin + i18n | 0
+0/24 | ✅ 설계 완료 |
+| 7 | 모니터링 | 0
+0/6 | ✅ 설계 완료 |
+| - | app/ 코드 구현 | -/- | 🔲 구현 예정 |
 
 ---
 
@@ -107,6 +110,13 @@ docs/
 | 로컬 개발 | ngrok 터널링 |
 | 로깅 | JSON 구조화 로그 (/var/log/app/app.log) |
 | 백업 | pg_dump 일일, 30일 보존 |
+| 다국어(i18n) | users.locale (en 기본), en/ko 지원 |
+| 관리자 키워드 | admin → 관리자 전용, settings → 전체 사용자 |
+| 사용자 권한 | configurations.user_permissions (can_run_query) |
+| Alert 액션 | configurations.alert_actions (alert_code → query_key 매핑) |
+| 쿼리 진행 표시 | 즉시 progress 카드 → 완료 시 elapsed 포함 result 카드 |
+| Alert 리포트 | GET /report/{alert_id} Jinja2 HTML 페이지 |
+| 중복 실행 방지 | Redis executed:{message_name}:{function} TTL 1시간 |
 
 ---
 
