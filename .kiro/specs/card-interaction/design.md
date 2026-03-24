@@ -29,9 +29,35 @@
 | Situation | Strategy |
 |---|---|
 | `refresh_card` clicked | sync update (replace card in webhook response) |
-| `run_query` executed | async REST (update card via Chat REST API after Celery completes) |
+| `run_query` executed | 1) sync: return progress card immediately<br>2) async: Celery runs query, sends result card via REST API on completion |
 | Error occurred | sync update (return error_card immediately) |
 | After dialog submission | new message (keep original card + send new message) |
+
+## run_query Progress & Completion Flow
+
+```
+[Run Query] clicked
+  → webhook response: progress card (⏳ Running query...)
+  → Celery task starts, stores start_time in Redis: query_start:{task_id}
+
+Celery task completes
+  → elapsed = time.time() - start_time
+  → send query_result card via Chat REST API
+  → card subtitle: "Completed in {elapsed}s"
+  → Redis key deleted
+```
+
+### Progress Card
+```
+⏳ Running query...
+```
+
+### Result Card (on completion)
+```
+✅ {query_key}                    ← header title
+Completed in {elapsed}s           ← header subtitle
+[query result content]
+```
 
 ## Query Result Card Structure
 
