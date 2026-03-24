@@ -39,6 +39,8 @@ Google Chat → Cloud Run (JWT verify) → on-premise (HTTPS + INTERNAL_API_TOKE
 ```
 POST /webhook/chat        → verify JWT → forward to on-premise /webhook/chat
 POST /webhook/chat/dialog → verify JWT → forward to on-premise /webhook/chat/dialog
+POST /webhook/alert       → verify JWT → forward to on-premise /webhook/alert
+GET  /report/{alert_id}   → forward to on-premise /report/{alert_id} (no JWT required — internal network only)
 GET  /health              → return {"status": "ok"}
 ```
 

@@ -1,6 +1,6 @@
 # 프로젝트 종합 정리 (점검용)
 
-> 마지막 갱신: 2026-03-24 15:15
+> 마지막 갱신: 2026-03-24 15:16
 > 이 파일은 .kiro 문서 변경 시 pre-commit hook에 의해 자동 갱신됩니다.
 
 ---
@@ -210,4 +210,4 @@ ngrok http 8000
 
 ## 10. 설계 보완 필요 항목
 
-- ⚠ Endpoint 'GET /report/' in card-interaction/design.md not found in infra Cloud Run relay design
+없음
