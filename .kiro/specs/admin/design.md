@@ -119,6 +119,8 @@ STRINGS = {
         "admin.query_list": "Query List",
         "admin.query_add": "Add Query",
         "admin.query_delete": "Delete Query",
+        "admin.alert_actions": "Alert Actions",
+        "admin.user_permissions": "User Permissions",
         "admin.my_settings": "My Settings",
         "admin.template_gallery": "Template Gallery",
     },
@@ -149,6 +151,8 @@ STRINGS = {
         "admin.query_list": "쿼리 목록",
         "admin.query_add": "쿼리 추가",
         "admin.query_delete": "쿼리 삭제",
+        "admin.alert_actions": "알림 액션",
+        "admin.user_permissions": "사용자 권한",
         "admin.my_settings": "내 설정",
         "admin.template_gallery": "템플릿 갤러리",
     }

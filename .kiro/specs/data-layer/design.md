@@ -9,6 +9,7 @@
 | `tasks` | Celery task status | 3 months |
 | `audit_logs` | Change audit trail | 1 year |
 | `notifications` | Sent notification history | 3 months |
+| `alerts` | External alert events + report data | 3 months |
 | `configurations` | System config + allowed queries | indefinite |
 
 ## DDL
@@ -78,6 +79,16 @@ CREATE TABLE configurations (
 -- Initial seed: allowed queries
 INSERT INTO configurations (key, value, description) VALUES
 ('allowed_queries', '{}', 'Map of query_key to SQL string for internal DB execution');
+
+CREATE TABLE alerts (
+    id SERIAL PRIMARY KEY,
+    alert_code VARCHAR(100) NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    body JSONB DEFAULT '{}',
+    space_name VARCHAR(255),
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+CREATE INDEX idx_alerts_created_at ON alerts(created_at);
 ```
 
 ## Redis Key Patterns

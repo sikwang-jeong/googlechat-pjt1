@@ -115,6 +115,9 @@ Completed in {elapsed}s           ← header subtitle
 ```
 
 ## Alert Report Page
+`GET /report/{alert_id}` — served by `app/routers/alert.py` using Jinja2 template.
+
+## Template Gallery Dialog Flow
 
 ### Entry
 ```

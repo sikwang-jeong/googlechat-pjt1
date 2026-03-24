@@ -5,11 +5,12 @@
 app/
 ├── main.py
 ├── core/config.py, auth.py
-├── routers/webhook.py, dialog.py, health.py
-├── services/card_builder.py, event_handler.py, db_query.py
+├── routers/webhook.py, dialog.py, health.py, alert.py
+├── services/card_builder.py, event_handler.py, db_query.py, admin_service.py
 ├── models/chat_event.py, db.py
 ├── db/session.py, redis.py
-└── tasks/celery_app.py
+├── tasks/celery_app.py
+└── templates/alert.html
 ```
 
 ## Endpoints
