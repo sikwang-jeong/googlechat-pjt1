@@ -16,6 +16,15 @@ if [ -n "$KIRO_CHANGED" ]; then
   # Regenerate REVIEW.md
   .kiro/hooks/update-review.sh
   git add REVIEW.md
+
+  # Show open TODO items
+  TODO_LINES=$(grep -rn '^\- \[ \]' .kiro/specs/*/tasks.md 2>/dev/null)
+  if [ -n "$TODO_LINES" ]; then
+    echo ""
+    echo "📋 Open TODO items:"
+    echo "$TODO_LINES" | sed 's|.kiro/specs/||; s|/tasks.md:| → |'
+    echo ""
+  fi
 fi
 
 # 2. Run ruff check (only if app/ exists)
@@ -43,15 +52,6 @@ if [ -d "tests" ]; then
     echo "Tests failed. Fix before committing."
     exit 1
   fi
-fi
-
-# 4. Show open TODO items from specs tasks.md files
-TODO_LINES=$(grep -rn '^\- \[ \]' .kiro/specs/*/tasks.md 2>/dev/null)
-if [ -n "$TODO_LINES" ]; then
-  echo ""
-  echo "📋 Open TODO items:"
-  echo "$TODO_LINES" | sed 's|.kiro/specs/||; s|/tasks.md:| → |'
-  echo ""
 fi
 
 exit 0
