@@ -1,6 +1,6 @@
 # 프로젝트 종합 정리 (점검용)
 
-> 마지막 갱신: 2026-03-24 10:53
+> 마지막 갱신: 2026-03-24 11:20
 > 이 파일은 .kiro 문서 변경 시 pre-commit hook에 의해 자동 갱신됩니다.
 
 ---
@@ -170,6 +170,16 @@ ngrok http 8000
 - [ ] End-to-end test: Chat → Cloud Run → FastAPI → response
 - [ ] Verify Celery retry behavior (3x max)
 - [ ] Verify failure card sent after max retries
+- [ ] Implement `app/routers/admin.py` — CRUD endpoints for allowed_queries
+- [ ] Create `app/templates/admin/dashboard.html` — query list table
+- [ ] Create `app/templates/admin/query_form.html` — new/edit form
+- [ ] Mount admin router in `app/main.py` (ENVIRONMENT=local guard)
+- [ ] Add `build_template(name, data)` and `TEMPLATE_SAMPLES` to `card_builder.py`
+- [ ] Create `app/templates/admin/templates.html` — template gallery grid
+- [ ] Create `app/templates/admin/template_preview.html` — single template modal preview
+- [ ] Verify `/admin` is not accessible when `ENVIRONMENT != local`
+- [ ] Manual test: add query via UI → verify in `configurations` table
+- [ ] Manual test: preview all 12 templates render without error
 - [ ] Write `docker-compose.yml`
 - [ ] Write `Dockerfile`
 - [ ] Write `Caddyfile`
