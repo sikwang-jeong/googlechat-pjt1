@@ -127,3 +127,29 @@ class ChatEvent(BaseModel):
     space: dict[str, Any] = {}
     message: dict[str, Any] = {}
 ```
+
+## i18n Card Rendering
+
+All card text is rendered in the user's locale at build time.
+
+### Flow
+```
+event received
+  → resolve user.google_id
+  → fetch users.locale from DB (default: "en")
+  → pass locale to build_template(name, data, locale)
+  → card_builder.py calls i18n(key, locale) for all text strings
+  → return localized card JSON
+```
+
+### Special Cases
+| Scenario | Locale Used |
+|---|---|
+| Webhook event (user known) | `users.locale` |
+| Celery task (user_id in payload) | `users.locale` |
+| Celery Beat (no specific user) | `"en"` (default) |
+| Error before user lookup | `"en"` (default) |
+
+### Scope
+- Applies to: card header, widget labels, button text, error messages
+- Does NOT apply to: raw DB query results, system identifiers (query_key, db name)
