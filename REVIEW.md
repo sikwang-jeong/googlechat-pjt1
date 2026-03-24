@@ -1,6 +1,6 @@
 # 프로젝트 종합 정리 (점검용)
 
-> 마지막 갱신: 2026-03-24 10:42
+> 마지막 갱신: 2026-03-24 10:52
 > 이 파일은 .kiro 문서 변경 시 pre-commit hook에 의해 자동 갱신됩니다.
 
 ---
@@ -139,6 +139,12 @@ ngrok http 8000
 
 ## 9. 미완료 항목
 
+- [ ] Add `MONITORING_SPACE_NAME` to `.env.dev.example`
+- [ ] Implement `app/services/db_health.py` — connection check per driver (postgres/oracle/mysql)
+- [ ] Implement `app/tasks/monitoring.py` — Celery task + card send logic
+- [ ] Register Celery Beat schedule in `tasks/celery_app.py`
+- [ ] Add `monitoring_detail` dialog handler to `routers/dialog.py`
+- [ ] Manual test: trigger task via `celery call tasks.monitoring.run_db_monitor`
 - [ ] Implement `db/session.py` (main + internal DB engines)
 - [ ] Implement `db/redis.py`
 - [ ] Implement `tasks/celery_app.py`
