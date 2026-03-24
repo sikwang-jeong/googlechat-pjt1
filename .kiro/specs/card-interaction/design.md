@@ -24,6 +24,23 @@
 { "dateTimePicker": { "name": "field", "label": "Label", "type": "DATE_AND_TIME" } }
 ```
 
+## Card Update Strategy
+
+| Situation | Strategy |
+|---|---|
+| `refresh_card` clicked | sync update (replace card in webhook response) |
+| `run_query` executed | async REST (update card via Chat REST API after Celery completes) |
+| Error occurred | sync update (return error_card immediately) |
+| After dialog submission | new message (keep original card + send new message) |
+
+## Query Result Card Structure
+
+| Condition | Widget |
+|---|---|
+| 1–2 columns | `decoratedText` list — `topLabel`: column name, `text`: value |
+| 3+ columns | `textParagraph` — HTML table format |
+| 0 rows | `textParagraph` — "No results found." |
+
 ## Button with Dialog
 ```json
 {

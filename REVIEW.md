@@ -1,6 +1,6 @@
 # 프로젝트 종합 정리 (점검용)
 
-> 마지막 갱신: 2026-03-23 22:31
+> 마지막 갱신: 2026-03-24 10:24
 > 이 파일은 .kiro 문서 변경 시 pre-commit hook에 의해 자동 갱신됩니다.
 
 ---
@@ -85,8 +85,8 @@ docs/
 | Stage | 내용 | 태스크 진행 | 상태 |
 |---|---|---|---|
 | 1 | Card v2 설계 | 4/7 | ✅ 설계 완료 |
-| 2 | FastAPI 백엔드 | 6/9 | ✅ 설계 완료 |
-| 3 | DB / Redis / Celery | 7/11 | ✅ 설계 완료 |
+| 2 | FastAPI 백엔드 | 6/16 | ✅ 설계 완료 |
+| 3 | DB / Redis / Celery | 3/12 | ✅ 설계 완료 |
 | 4 | 인프라 | 5/13 | ✅ 설계 완료 |
 | 5 | 통합 + 에러 처리 + 로깅 | 4/10 | ✅ 설계 완료 |
 | - | app/ 코드 구현 | -/- | 🔲 Codex 예정 |
@@ -139,9 +139,31 @@ ngrok http 8000
 
 ## 9. 미완료 항목
 
+- [ ] Implement `db/session.py` (main + internal DB engines)
+- [ ] Implement `db/redis.py`
+- [ ] Implement `tasks/celery_app.py`
+- [ ] Implement `models/db.py` (SQLAlchemy ORM models)
+- [ ] Configure Alembic (`alembic init`, `env.py`)
+- [ ] Create initial migration (`alembic revision --autogenerate`)
+- [ ] Apply migration (`alembic upgrade head`)
+- [ ] Insert initial `configurations` data (allowed queries)
+- [ ] Set up data retention cron job
+- [ ] Implement `core/config.py`
+- [ ] Implement `core/auth.py`
+- [ ] Implement `models/chat_event.py`
+- [ ] Implement `models/db.py` (SQLAlchemy models)
+- [ ] Implement `routers/health.py`, `webhook.py`, `dialog.py`
+- [ ] Implement `services/event_handler.py`
 - [ ] Implement `services/card_builder.py`
+- [ ] Implement `services/db_query.py`
 - [ ] Write unit tests for event routing
 - [ ] Integration test with Cloud Run relay
+- [ ] Implement `services/card_builder.py` error_card
+- [ ] Implement extended `/health` with DB + Redis checks
+- [ ] Implement `core/logging.py` JSON formatter
+- [ ] End-to-end test: Chat → Cloud Run → FastAPI → response
+- [ ] Verify Celery retry behavior (3x max)
+- [ ] Verify failure card sent after max retries
 - [ ] Write `docker-compose.yml`
 - [ ] Write `Dockerfile`
 - [ ] Write `Caddyfile`
@@ -150,16 +172,6 @@ ngrok http 8000
 - [ ] Write `backup.sh` + register crontab
 - [ ] Deploy Cloud Run and verify relay
 - [ ] Verify Caddy TLS certificate issued
-- [ ] Implement `services/card_builder.py` error_card
-- [ ] Implement extended `/health` with DB + Redis checks
-- [ ] Implement `core/logging.py` JSON formatter
-- [ ] End-to-end test: Chat → Cloud Run → FastAPI → response
-- [ ] Verify Celery retry behavior (3x max)
-- [ ] Verify failure card sent after max retries
 - [ ] Implement `card_builder.py` service
 - [ ] Test all widgets in Card Builder
 - [ ] Verify webhook receives events from Google Chat
-- [ ] Create initial migration (`alembic revision --autogenerate`)
-- [ ] Apply migration (`alembic upgrade head`)
-- [ ] Insert initial `configurations` data (allowed queries)
-- [ ] Set up data retention cron job

@@ -25,6 +25,67 @@ match event.type:
     case "CARD_CLICKED": match event.action.function ...
 ```
 
+## Event Response Spec
+
+### ADDED_TO_SPACE
+- Response: welcome card (header + usage guide TextParagraph)
+
+### REMOVED_FROM_SPACE
+- Action: write audit log only → return `{}`
+
+### MESSAGE
+| Keyword | Response |
+|---|---|
+| `조회` | Query selection card (SelectionInput + submit button) |
+| `도움말` | Usage guide card (TextParagraph) |
+| other | Usage guide card (fallback) |
+
+### CARD_CLICKED — action.function routing
+| function | Action |
+|---|---|
+| `open_dialog` | Open dialog (`DIALOG` actionResponse) |
+| `run_query` | Execute query → Celery async → result card |
+| `refresh_card` | Refresh current card (sync update) |
+| other | Return error_card |
+
+### Celery Task Payload (run_query)
+```json
+{
+  "query_key": "sales_summary",
+  "params": { "start_date": "2026-01-01" },
+  "space_name": "spaces/xxx",
+  "thread_name": "spaces/xxx/threads/yyy",
+  "user_google_id": "xxx",
+  "message_name": "spaces/xxx/messages/yyy"
+}
+```
+
+## Internal DB Routing
+
+`configurations.allowed_queries` JSONB structure:
+```json
+{
+  "allowed_queries": {
+    "sales_summary": {
+      "db": "postgres",
+      "sql": "SELECT ... WHERE date >= :start_date",
+      "allowed_params": ["start_date"]
+    },
+    "inventory": {
+      "db": "oracle",
+      "sql": "SELECT ... WHERE item_id = :item_id",
+      "allowed_params": ["item_id"]
+    }
+  }
+}
+```
+
+### Execution Flow
+1. Look up `query_key` in `allowed_queries` → 400 if not found
+2. Validate request params against `allowed_params` → 400 if invalid
+3. Select target DB from `db` field (postgres / oracle / mysql)
+4. Execute SQL with bound params
+
 ## Key Models
 ```python
 class ChatEvent(BaseModel):

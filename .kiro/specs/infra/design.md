@@ -17,7 +17,40 @@
                                 [Redis]
 ```
 
+## Cloud Run Relay Design
+
+### Stack
+FastAPI (Python 3.12) — consistent with on-premise stack.
+
+### Flow
+```
+Google Chat → Cloud Run (JWT verify) → on-premise (HTTPS + INTERNAL_API_TOKEN)
+```
+
+### JWT Verification
+- Cloud Run verifies Google Chat JWT before forwarding
+- Invalid JWT → 401, no forwarding
+
+### On-premise Connection Failure
+- Timeout or connection error → return error_card JSON with HTTP 200
+- Ensures Google Chat does not retry
+
+### cloudrun/main.py structure
+```
+POST /webhook/chat        → verify JWT → forward to on-premise /webhook/chat
+POST /webhook/chat/dialog → verify JWT → forward to on-premise /webhook/chat/dialog
+GET  /health              → return {"status": "ok"}
+```
+
+### Environment Variables
+| Var | Purpose |
+|---|---|
+| `ONPREM_BASE_URL` | on-premise FastAPI base URL |
+| `INTERNAL_API_TOKEN` | Bearer token for on-premise auth |
+| `GOOGLE_CHAT_AUDIENCE` | Expected JWT audience (Cloud Run URL) |
+
 ## Docker Compose Services
+
 | Service | Image | Role |
 |---|---|---|
 | fastapi | custom | API server |
@@ -31,6 +64,32 @@
 - Min instances: 1
 - Role: relay only (forward to on-premise)
 - Estimated cost: $5–10/month
+
+## Caddy Rate Limiting
+
+Plugin: `caddy-ratelimit` (github.com/mholt/caddy-ratelimit) — built via `xcaddy`.
+
+```caddyfile
+{
+    order rate_limit before basicauth
+}
+
+:443 {
+    tls /etc/caddy/certs/cert.pem /etc/caddy/certs/key.pem
+
+    rate_limit {
+        zone dynamic {
+            key {remote_host}
+            events 60
+            window 1m
+        }
+    }
+
+    reverse_proxy fastapi:8000
+}
+```
+
+Rate limit exceeded → HTTP 429 (Too Many Requests).
 
 ## CI/CD (GitLab)
 ```

@@ -97,6 +97,7 @@ INSERT INTO configurations (key, value, description) VALUES
 | MySQL | aiomysql |
 
 ## Allowed Query Execution Flow
-1. Look up `query_key` in `configurations.allowed_queries`
-2. If not found → raise 400
-3. Execute on target internal DB with bound params
+1. Look up `query_key` in `configurations.allowed_queries` → 400 if not found
+2. Validate request params against `allowed_params` list → 400 if invalid
+3. Select target DB from `db` field (postgres / oracle / mysql)
+4. Execute SQL with bound params
