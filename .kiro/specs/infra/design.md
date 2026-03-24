@@ -93,6 +93,12 @@ Plugin: `caddy-ratelimit` (github.com/mholt/caddy-ratelimit) — built via `xcad
 
 Rate limit exceeded → HTTP 429 (Too Many Requests).
 
+## Backup Strategy
+- Tool: `pg_dump`
+- Schedule: daily (cron)
+- Retention: 30 days
+- Script: `scripts/backup.sh`
+
 ## CI/CD (GitLab)
 ```
 push to main

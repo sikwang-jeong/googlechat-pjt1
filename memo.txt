@@ -138,3 +138,29 @@ newgrp docker
 ssh-keygen -t rsa
 eval $(ssh-agent)
 ssh-add ~/.ssh/id_rsa
+
+---
+## 2026-03-24 작업 내용
+
+### 1. 에이전트 페르소나 정의 (.kiro/skills/SKILLS.md)
+- dev-agent: FastAPI/async 전문, Google Chat Card v2, Redis 중복 방지, i18n 강제
+- qa-agent: 보안 우선, ✅⚠️🔴 마커, 스펙 정확 대조
+- deploy-agent: 신중함 우선, /health 필수 확인, 롤백 즉시 문서화
+- docs-agent: 소스 직접 읽기, API-SPEC.md/CHANGELOG.md 단일 진실 공급원
+
+### 2. lint-docs.sh 크로스체크 보강 (9개 → 30개)
+- monitoring: design ↔ requirements ↔ tasks 검사 추가
+- infra: requirements ↔ design ↔ tasks 검사 추가
+- integration: requirements ↔ design 검사 추가
+- card-interaction: requirements ↔ design 위젯 검사 추가
+- data-layer: 7개 테이블 DDL 존재 여부 검사 추가
+- admin: 전체 dialog 타입 ↔ tasks 검사 추가
+- SKILLS.md: 4개 에이전트 정의 여부 검사 추가
+
+### 3. 실제 설계 갭 보완
+- integration/design.md: Celery 재시도 전략 섹션 추가
+- infra/design.md: 백업 전략 섹션 추가
+- card-interaction/design.md: buttonList 위젯 패턴 추가
+
+### 4. pre-commit hook 수정
+- ruff 미설치 환경에서 skip 처리 (command -v ruff 체크)

@@ -22,6 +22,7 @@
 { "textInput": { "name": "field", "label": "Label", "type": "SINGLE_LINE", "hintText": "hint" } }
 { "selectionInput": { "name": "field", "label": "Label", "type": "DROPDOWN", "items": [{ "text": "A", "value": "a", "selected": false }] } }
 { "dateTimePicker": { "name": "field", "label": "Label", "type": "DATE_AND_TIME" } }
+{ "buttonList": { "buttons": [{ "text": "Action", "onClick": { "action": { "function": "run_query" } } }] } }
 ```
 
 ## Card Update Strategy

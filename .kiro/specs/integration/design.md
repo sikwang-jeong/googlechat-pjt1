@@ -10,7 +10,12 @@
 | Celery task | Exception | Retry up to 3x → send failure card |
 | Disallowed query | Not in configurations | 400 + error card |
 
-## Celery Failure Notification
+## Celery Retry Strategy
+- Max retries: 3
+- Retry delay: 60s (exponential backoff not required)
+- After max retries: send failure card via Chat REST API
+
+
 
 After max retries (3x), the Celery worker sends a failure card directly via Google Chat REST API.
 

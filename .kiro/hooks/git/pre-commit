@@ -29,18 +29,22 @@ fi
 
 # 2. Run ruff check (only if app/ exists)
 if [ -d "app" ]; then
-  echo "Running ruff check..."
-  ruff check app/
-  if [ $? -ne 0 ]; then
-    echo "ruff check failed. Fix errors before committing."
-    exit 1
-  fi
+  if ! command -v ruff &>/dev/null; then
+    echo "ruff not installed, skipping lint."
+  else
+    echo "Running ruff check..."
+    ruff check app/
+    if [ $? -ne 0 ]; then
+      echo "ruff check failed. Fix errors before committing."
+      exit 1
+    fi
 
-  echo "Running ruff format check..."
-  ruff format --check app/
-  if [ $? -ne 0 ]; then
-    echo "Format issues found. Run: ruff format app/"
-    exit 1
+    echo "Running ruff format check..."
+    ruff format --check app/
+    if [ $? -ne 0 ]; then
+      echo "Format issues found. Run: ruff format app/"
+      exit 1
+    fi
   fi
 fi
 
