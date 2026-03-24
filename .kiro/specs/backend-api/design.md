@@ -45,8 +45,10 @@ match event.type:
 ### MESSAGE
 | Keyword | Response |
 |---|---|
-| `조회` | Query selection card (SelectionInput + submit button) |
-| `도움말` | Usage guide card (TextParagraph) |
+| `query` | Query selection card (SelectionInput + submit button) |
+| `help` | Usage guide card (TextParagraph) |
+| `settings` | User settings dialog (locale change — all users) |
+| `admin` | Admin main dialog (admin users only) |
 | other | Usage guide card (fallback) |
 
 ### CARD_CLICKED — action.function routing
