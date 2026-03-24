@@ -1,6 +1,6 @@
 # 프로젝트 종합 정리 (점검용)
 
-> 마지막 갱신: 2026-03-24 15:17
+> 마지막 갱신: 2026-03-24 15:18
 > 이 파일은 .kiro 문서 변경 시 pre-commit hook에 의해 자동 갱신됩니다.
 
 ---
@@ -85,7 +85,7 @@ docs/
 | Stage | 내용 | 태스크 진행 | 상태 |
 |---|---|---|---|
 | 1 | Card v2 설계 | 4/7 | ✅ 설계 완료 |
-| 2 | FastAPI 백엔드 | 6/16 | ✅ 설계 완료 |
+| 2 | FastAPI 백엔드 | 6/18 | ✅ 설계 완료 |
 | 3 | DB / Redis / Celery | 3/12 | ✅ 설계 완료 |
 | 4 | 인프라 | 5/13 | ✅ 설계 완료 |
 | 5 | 통합 + 에러 처리 + 로깅 | 4/10 | ✅ 설계 완료 |
@@ -162,6 +162,8 @@ ngrok http 8000
 - [ ] Implement `services/event_handler.py`
 - [ ] Implement `services/card_builder.py`
 - [ ] Implement `services/db_query.py`
+- [ ] Implement `routers/alert.py` (POST /webhook/alert, GET /report/{alert_id})
+- [ ] Write `templates/alert.html` (Jinja2 report template)
 - [ ] Write unit tests for event routing
 - [ ] Integration test with Cloud Run relay
 - [ ] Implement `services/card_builder.py` error_card

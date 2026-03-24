@@ -97,7 +97,54 @@ while IFS= read -r line; do
   fi
 done < <(grep -rh '^\- \[x\].*Implement' .kiro/specs/ 2>/dev/null)
 
-# ── Output ───────────────────────────────────────────────────────────────────
+# ── 9. Cross-check: design features reflected in requirements ────────────────
+# alert_actions in admin/design.md → should appear in admin/requirements.md
+grep -q 'alert_actions\|Alert Action' .kiro/specs/admin/design.md && \
+  ! grep -qi 'alert.action' .kiro/specs/admin/requirements.md && \
+  warn "admin/design.md has alert_actions but admin/requirements.md has no alert action requirement"
+
+# user_permissions in admin/design.md → should appear in admin/requirements.md
+grep -q 'user_permissions\|User Permission' .kiro/specs/admin/design.md && \
+  ! grep -qi 'user.permission\|can_run_query' .kiro/specs/admin/requirements.md && \
+  warn "admin/design.md has user_permissions but admin/requirements.md has no user permission requirement"
+
+# /webhook/alert in backend-api/design.md → should appear in backend-api/requirements.md
+grep -q '/webhook/alert' .kiro/specs/backend-api/design.md && \
+  ! grep -q '/webhook/alert' .kiro/specs/backend-api/requirements.md && \
+  warn "backend-api/design.md has /webhook/alert but backend-api/requirements.md missing R for it"
+
+# /report/ in backend-api/design.md → should appear in backend-api/requirements.md
+grep -q '/report/' .kiro/specs/backend-api/design.md && \
+  ! grep -q '/report/' .kiro/specs/backend-api/requirements.md && \
+  warn "backend-api/design.md has /report/{alert_id} but backend-api/requirements.md missing R for it"
+
+# alerts table in data-layer/design.md → should appear in data-layer/requirements.md
+grep -q 'CREATE TABLE alerts' .kiro/specs/data-layer/design.md && \
+  ! grep -qi 'alert' .kiro/specs/data-layer/requirements.md && \
+  warn "data-layer/design.md has alerts table but data-layer/requirements.md does not mention it"
+
+# i18n/locale in admin/design.md → should appear in admin/requirements.md
+grep -q 'users.locale\|i18n' .kiro/specs/admin/design.md && \
+  ! grep -qi 'locale\|i18n\|language' .kiro/specs/admin/requirements.md && \
+  warn "admin/design.md has i18n/locale but admin/requirements.md has no language requirement"
+
+# Cross-check: design features reflected in tasks ────────────────────────────
+# alert_actions dialog in admin/design.md → should appear in admin/tasks.md
+grep -q 'admin_alert_actions' .kiro/specs/admin/design.md && \
+  ! grep -q 'admin_alert_actions' .kiro/specs/admin/tasks.md && \
+  warn "admin/design.md has admin_alert_actions dialog but admin/tasks.md missing task"
+
+# user_permissions dialog in admin/design.md → should appear in admin/tasks.md
+grep -q 'admin_user_permissions' .kiro/specs/admin/design.md && \
+  ! grep -q 'admin_user_permissions' .kiro/specs/admin/tasks.md && \
+  warn "admin/design.md has admin_user_permissions dialog but admin/tasks.md missing task"
+
+# /webhook/alert in backend-api/design.md → should appear in backend-api/tasks.md
+grep -q '/webhook/alert\|alert.py' .kiro/specs/backend-api/design.md && \
+  ! grep -q 'alert' .kiro/specs/backend-api/tasks.md && \
+  warn "backend-api/design.md has alert endpoint but backend-api/tasks.md missing task"
+
+
 for w in "${WARNINGS[@]}"; do
   echo "$w" >> "$WARN_FILE"
 done

@@ -19,5 +19,7 @@
   - [ ] `build_template(name, data, locale="en")`
   - [ ] `i18n(key, locale)` helper
 - [ ] Implement `services/db_query.py`
+- [ ] Implement `routers/alert.py` (POST /webhook/alert, GET /report/{alert_id})
+- [ ] Write `templates/alert.html` (Jinja2 report template)
 - [ ] Write unit tests for event routing
 - [ ] Integration test with Cloud Run relay
