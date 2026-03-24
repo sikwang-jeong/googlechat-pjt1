@@ -56,6 +56,44 @@
 { "text": "Open Dialog",  "onClick": { "action": { "function": "open_dialog", "interaction": "OPEN_DIALOG" } } }
 ```
 
+## Template Gallery Dialog Flow
+
+### Entry
+```
+admin keyword → Admin Main Dialog → [Template Gallery] button
+  → CARD_CLICKED: function=open_dialog, parameters.type=admin_template_gallery
+```
+
+### `admin_template_gallery` Dialog
+- Lists all 12 templates (ID, name, description) as `decoratedText` rows
+- Each row has a [Preview] button
+
+### Preview Flow
+```
+[Preview] clicked
+  → CARD_CLICKED: function=open_dialog, parameters.type=admin_template_preview
+                  parameters.template=<template_id>
+  → card_builder.build_template(name, TEMPLATE_SAMPLES[name], locale)
+  → return dialog with rendered card JSON (visible to requester only)
+```
+
+### Button Definition
+```json
+{
+  "text": "Preview",
+  "onClick": {
+    "action": {
+      "function": "open_dialog",
+      "interaction": "OPEN_DIALOG",
+      "parameters": [
+        { "key": "type", "value": "admin_template_preview" },
+        { "key": "template", "value": "query_result" }
+      ]
+    }
+  }
+}
+```
+
 ## Endpoints
 - `POST /webhook/chat` — button clicks, messages, space events
 - `POST /webhook/chat/dialog` — dialog form submissions
