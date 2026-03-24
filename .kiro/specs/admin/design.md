@@ -1,54 +1,76 @@
 # Admin — Design
 
-## Architecture
-
+## Trigger Flow
 ```
-Browser (localhost) → FastAPI /admin/* → Jinja2 HTML
-                                       → /admin/api/* (JSON CRUD)
+User sends "관리"
+  → MESSAGE handler (event_handler.py)
+  → Check user.google_id in configurations.admin_users
+  → Unauthorized → { "text": "권한이 없습니다." }
+  → Authorized   → open admin main dialog
 ```
 
-- Served by existing FastAPI app — no separate process.
-- Router: `app/routers/admin.py`
-- Templates: `app/templates/admin/` (Jinja2)
-- Only mounted when `ENVIRONMENT=local` (env var guard).
+## Admin User List
+Stored in `configurations` table:
+```json
+{ "key": "admin_users", "value": ["google_id_1", "google_id_2"] }
+```
 
-## Endpoints
+## MESSAGE Keyword Addition
+| Keyword | Response |
+|---|---|
+| `조회` | Query selection card |
+| `도움말` | Help card |
+| `관리` | Admin dialog (authorized users only) |
+| other | Help card (fallback) |
 
-| Method | Path | Purpose |
+## Dialog Flow
+
+### 1. Admin Main Dialog (`admin_main`)
+```
+[쿼리 목록 보기]
+[쿼리 추가]
+[쿼리 삭제]
+```
+
+### 2. Query List Dialog (`admin_query_list`)
+`decoratedText` list — one row per query:
+- `topLabel`: query_key
+- `text`: db type
+- `bottomLabel`: allowed_params
+
+### 3. Query Add Dialog (`admin_query_add`)
+Form fields:
+```
+query_key     [TextInput]
+db            [SelectionInput DROPDOWN: postgres / oracle / mysql]
+sql           [TextInput MULTIPLE_LINE]
+allowed_params [TextInput — comma-separated]
+[저장] [취소]
+```
+On submit → insert into `configurations.allowed_queries` → close dialog + text "쿼리가 등록됐습니다."
+
+### 4. Query Delete Dialog (`admin_query_delete`)
+```
+query_key  [SelectionInput DROPDOWN — populated from allowed_queries]
+[삭제] [취소]
+```
+On [삭제] → confirm dialog (`admin_query_delete_confirm`) → delete → "쿼리가 삭제됐습니다."
+
+## CARD_CLICKED Routing Addition
+| function | parameters.type | Action |
 |---|---|---|
-| `GET` | `/admin` | Dashboard — query list |
-| `GET` | `/admin/queries/new` | New query form |
-| `POST` | `/admin/queries` | Create query |
-| `GET` | `/admin/queries/{key}/edit` | Edit query form |
-| `PUT` | `/admin/queries/{key}` | Update query |
-| `DELETE` | `/admin/queries/{key}` | Delete query |
-| `GET` | `/admin/templates` | Card template preview gallery |
-| `GET` | `/admin/templates/{name}` | Preview single template with sample data |
+| `open_dialog` | `admin_main` | Open admin main dialog |
+| `open_dialog` | `admin_query_list` | Open query list dialog |
+| `open_dialog` | `admin_query_add` | Open query add form |
+| `open_dialog` | `admin_query_delete` | Open query delete form |
+| `open_dialog` | `admin_query_delete_confirm` | Open delete confirmation |
 
-## Query Management UI
-
-### Dashboard (`/admin`)
-- Table: query_key / db / allowed_params / actions (Edit, Delete)
-- Button: [+ 새 쿼리 추가]
-
-### Query Form (`/admin/queries/new`, `/admin/queries/{key}/edit`)
-```
-query_key    [text input]
-db           [dropdown: postgres / oracle / mysql]  ← 추천
-sql          [textarea]
-allowed_params [text input, comma-separated]
-              [저장] [취소]
-```
-
-## Card Template Preview Gallery (`/admin/templates`)
-
-12 templates displayed as a grid. Each card shows:
-- Template name
-- Description
-- [미리보기] button → renders sample card JSON in a modal
+## Card Template Preview
+Card templates (A~L) are defined in `card_builder.py` as `build_template(name, data)`.
+Preview is available via `admin_template_gallery` dialog — lists all 12 templates.
+Each template renders with `TEMPLATE_SAMPLES[name]` sample data.
 
 ### Template Catalog
-
 | ID | Name | Description |
 |---|---|---|
 | A | welcome | ADDED_TO_SPACE welcome card |
@@ -64,30 +86,14 @@ allowed_params [text input, comma-separated]
 | K | list_select | List selection card (RADIO/DROPDOWN) |
 | L | success | Task completion summary card |
 
-### Sample Data per Template
-Each template is rendered with hardcoded sample data in `card_builder.py`:
-```python
-TEMPLATE_SAMPLES = {
-    "welcome": { "display_name": "홍길동" },
-    "query_result": { "columns": ["날짜", "매출"], "rows": [["2026-01-01", "1,200,000"]] },
-    "monitoring": { "ok": 10, "error": 2, "errors": [{"key": "sales_db", "msg": "timeout"}] },
-    "alert": { "title": "배치 완료", "body": "일일 집계가 완료됐습니다." },
-    "confirm": { "title": "삭제 확인", "body": "정말 삭제하시겠습니까?" },
-    "progress": { "current": 2, "total": 3, "label": "데이터 집계 중..." },
-    "error": { "message": "DB 연결 실패" },
-    "success": { "message": "쿼리 실행 완료", "elapsed": "1.2s" },
-    # ... etc
-}
-```
-
 ## Files to Add
 ```
-app/routers/admin.py          ← CRUD + template preview endpoints
-app/templates/admin/          ← Jinja2 HTML templates
-app/services/card_builder.py  ← Add build_template(name, data) + TEMPLATE_SAMPLES
+app/services/admin_service.py   ← admin_users check, query CRUD logic
 ```
 
 ## Files to Modify
 ```
-app/main.py   ← Mount admin router only when ENVIRONMENT=local
+app/services/event_handler.py   ← Add "관리" keyword routing
+app/routers/dialog.py           ← Add admin_* dialog handlers
+app/services/card_builder.py    ← Add build_template() + TEMPLATE_SAMPLES
 ```
