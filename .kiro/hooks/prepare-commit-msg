@@ -1,0 +1,17 @@
+#!/bin/sh
+# prepare-commit-msg: Auto-insert issue number from branch name
+# Branch format: feat/123-description or fix/456-something
+
+COMMIT_MSG_FILE=$1
+BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null)
+
+# Extract issue number from branch name (e.g. feat/123-login → #123)
+ISSUE=$(echo "$BRANCH" | grep -oP '(?<=/)\d+(?=-)' | head -1)
+
+[ -z "$ISSUE" ] && exit 0
+
+# Skip if issue number already in message
+grep -q "#$ISSUE" "$COMMIT_MSG_FILE" && exit 0
+
+# Prepend issue number
+sed -i "1s/^/[#$ISSUE] /" "$COMMIT_MSG_FILE"

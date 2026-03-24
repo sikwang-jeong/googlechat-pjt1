@@ -1,0 +1,18 @@
+#!/bin/sh
+# commit-msg: Conventional Commits format validation
+# Format: type(scope): description
+# Types: feat, fix, docs, refactor, test, chore, style, perf
+
+MSG=$(cat "$1")
+
+# Allow merge commits
+echo "$MSG" | grep -qE "^Merge " && exit 0
+
+# Validate format
+echo "$MSG" | grep -qE "^(feat|fix|docs|refactor|test|chore|style|perf)(\(.+\))?: .{1,72}" && exit 0
+
+echo "ERROR: Invalid commit message format." >&2
+echo "Expected: type(scope): description" >&2
+echo "Types: feat, fix, docs, refactor, test, chore, style, perf" >&2
+echo "Example: feat(webhook): add CARD_CLICKED routing" >&2
+exit 1
