@@ -47,14 +47,14 @@ sql           [TextInput MULTIPLE_LINE]
 allowed_params [TextInput — comma-separated]
 [저장] [취소]
 ```
-On submit → insert into `configurations.allowed_queries` → close dialog + text "쿼리가 등록됐습니다."
+On submit → insert into `configurations.allowed_queries` → close dialog with `actionStatus: OK` (private, visible to requester only)
 
 ### 4. Query Delete Dialog (`admin_query_delete`)
 ```
 query_key  [SelectionInput DROPDOWN — populated from allowed_queries]
 [삭제] [취소]
 ```
-On [삭제] → confirm dialog (`admin_query_delete_confirm`) → delete → "쿼리가 삭제됐습니다."
+On [삭제] → confirm dialog (`admin_query_delete_confirm`) → delete → close dialog with `actionStatus: OK` (private, visible to requester only)
 
 ## CARD_CLICKED Routing Addition
 | function | parameters.type | Action |
