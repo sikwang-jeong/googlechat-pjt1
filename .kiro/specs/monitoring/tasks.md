@@ -1,8 +1,5 @@
 # Monitoring — Tasks
 
-> Status: PENDING — not yet scheduled for implementation.
-> Will be integrated with the main card interaction flow in a future sprint.
-
 ## Tasks
 
 - [ ] Add `MONITORING_SPACE_NAME` to `.env.dev.example`
