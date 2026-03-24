@@ -22,6 +22,10 @@ app/
 Google Chat → JWT → Cloud Run → INTERNAL_API_TOKEN → FastAPI
 ```
 
+### Route Protection
+- `/webhook/chat`, `/webhook/chat/dialog` — protected by `verify_internal_token` dependency
+- Cloud Run endpoints — protected by `verify_google_token` (JWT) dependency
+
 ## Event Routing
 ```python
 match event.type:
@@ -51,7 +55,7 @@ match event.type:
 | `open_dialog` | Open dialog (`DIALOG` actionResponse) |
 | `run_query` | Execute query → Celery async → result card |
 | `refresh_card` | Refresh current card (sync update) |
-| other | Return error_card |
+| other | Return `error-card` (cardId: `error-card`) |
 
 ### Celery Task Payload (run_query)
 ```json
